@@ -12,6 +12,8 @@ import secrets
 import png
 from functools import wraps
 from flask import send_file
+import smtplib
+from email.message import EmailMessage
 
 app = Flask(__name__)
 
@@ -46,37 +48,26 @@ class Device(db.Model):
     
     
     users = db.relationship('Users')
-    invitation = db.relationship('Invitation')
+    
    
     def __repr__(self):
         return f"Device('{self.id}')"
 
-
-class Guest(db.Model):
-    __tablename__ = 'db_guest'
-
-    id = db.Column(db.String(200), primary_key=True)
-    email = db.Column(db.String(200), nullable=False)
-    
-    invitation = db.relationship('Invitation')
-    
-    def __repr__(self):
-        return f"Guest('{self.email}', '{self.id}')"
 
 class Invitation(db.Model):
     __tablename__ = 'db_invitaion'
     
     id = db.Column(db.String(200), primary_key=True)
     qrcode=db.Column(db.String(200),nullable=False)
+    email = db.Column(db.String(200), nullable=False)
     creation_date= db.Column(DateTime, default=datetime.datetime.utcnow)
     usage_date = db.Column(DateTime, default=datetime.datetime.utcnow)
 
     user_id=db.Column(db.String(200),db.ForeignKey('db_users.id'), nullable=False)
-    guest_id=db.Column(db.String(200),db.ForeignKey('db_guest.id'), nullable=False)
-    device_id=db.Column(db.String(200),db.ForeignKey('db_device.id'),nullable=False)
+
     
     def __repr__(self):
-        return f"Invitation('{self.qrcode}', '{self.id}')"
+        return f"Invitation('{self.email}','{self.qrcode}', '{self.id}')"
 
 
 
@@ -112,53 +103,32 @@ def get_devices():
     response = make_response(jsonify({'Devices': output}))
     return response
 
-## Guest register 
-@app.route('/guest',methods=['POST'] )
-def registerGuest():
-    data= request.get_json()
-    if(db.session.query(Guest.email).filter_by(email=data['email']).scalar() is not None):
-        return 'This guest is already registred'
-
-    new_guest=Guest(id=data['id'],email=data['email'])
-    db.session.add(new_guest)
-    db.session.commit()
-    response = make_response(jsonify({'message': 'Guest registred sucessfuly', 'username':new_guest.email}))
-    return response
 
 ## Generate an invitation
 @app.route('/invite',methods=['POST'])
-
 def createInvitation():
+    #generate qrcode
     data = request.get_json()
-    if(db.session.query(Invitation.id).filter_by(id=data['id']).scalar() is not None):
-         return 'This invitation already exist'
+    qr = qrcode.QRCode(
+    version = 1,
+    error_correction = qrcode.constants.ERROR_CORRECT_H,
+    box_size = 10,
+    border = 4,
+    )
+    content = secrets.token_hex(16)
+    qr.add_data(content)
+    qr.make(fit=True)
+    img = qr.make_image()
+    img.save("image.jpg")
 
-    new_invitation=Invitation(id=data['id'],qrcode=generateQRImage(),user_id=data['user'],guest_id=data['guest'],device_id=data['device'])
+    #send qrcode to email
+
+    # if(db.session.query(Invitation.id).filter_by(id=data['id']).scalar() is not None):
+    #      return 'This invitation already exist'
+
+    new_invitation=Invitation(id=secrets.token_hex(16),qrcode=content,user_id=data['user'],email=data['email'])
     db.session.add(new_invitation)
     db.session.commit()
     response = make_response(jsonify({'message': 'Invitaion created!', 'qrcode':new_invitation.qrcode}))
     return response
 
-## Get invitation
-@app.route('/invitations')
-def get_invitations():
-    
-    invitations= Invitation.query.all()
-    output=[]
-    for invitation in invitations:
-        invitation_data ={"id":invitation.id,"qrcode":invitation.qrcode,"user":invitation.user_id,"guest":invitation.guest_id,"device":invitation.device_id}
-        output.append(invitation_data)
-        
-    response = make_response(jsonify({'Invitations': output}))
-    return response
-
-
-
-## Generate qrcode
-@app.route("/qrgenerator")
-def generateQRImage():
-    code = secrets.token_hex(16)
-    url = pyqrcode.create(code)
-    url.png('url.png', scale=8)
-    print(url.terminal())
-    return code
