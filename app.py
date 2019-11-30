@@ -28,9 +28,9 @@ db = SQLAlchemy(app)
 class Users(db.Model):
     __tablename__ = 'db_users'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(200), primary_key=True)
     username = db.Column(db.String(100),unique=True,nullable=False)
-    device_id = db.Column(db.Integer,db.ForeignKey('db_device.id'),nullable=False) 
+    device_id = db.Column(db.String(200),db.ForeignKey('db_device.id'),nullable=False) 
 
     invitation = db.relationship('Invitation')
     
@@ -42,42 +42,41 @@ class Users(db.Model):
 class Device(db.Model):
     __tablename__ = 'db_device'
 
-    id = db.Column(db.Integer, primary_key=True)
-    serial = db.Column(db.String(200), nullable=False)
+    id = db.Column(db.String(200), primary_key=True)
     
     
     users = db.relationship('Users')
     invitation = db.relationship('Invitation')
    
     def __repr__(self):
-        return f"Device('{self.serial}', '{self.id}')"
+        return f"Device('{self.id}')"
 
 
 class Guest(db.Model):
     __tablename__ = 'db_guest'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(200), primary_key=True)
     email = db.Column(db.String(200), nullable=False)
     
     invitation = db.relationship('Invitation')
     
     def __repr__(self):
-        return f"Guest('{self.username}', '{self.id}')"
+        return f"Guest('{self.email}', '{self.id}')"
 
 class Invitation(db.Model):
     __tablename__ = 'db_invitaion'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(200), primary_key=True)
     qrcode=db.Column(db.String(200),nullable=False)
     creation_date= db.Column(DateTime, default=datetime.datetime.utcnow)
     usage_date = db.Column(DateTime, default=datetime.datetime.utcnow)
 
-    user_id=db.Column(db.Integer,db.ForeignKey('db_users.id'), nullable=False)
-    guest_id=db.Column(db.Integer,db.ForeignKey('db_guest.id'), nullable=False)
-    device_id=db.Column(db.Integer,db.ForeignKey('db_device.id'),nullable=False)
+    user_id=db.Column(db.String(200),db.ForeignKey('db_users.id'), nullable=False)
+    guest_id=db.Column(db.String(200),db.ForeignKey('db_guest.id'), nullable=False)
+    device_id=db.Column(db.String(200),db.ForeignKey('db_device.id'),nullable=False)
     
     def __repr__(self):
-        return f"Invitation('{self.username}', '{self.id}')"
+        return f"Invitation('{self.qrcode}', '{self.id}')"
 
 
 
@@ -106,7 +105,7 @@ def get_devices():
     devices= Device.query.all()
     output = []
     for device in devices:
-        device_data = {'serial': device.serial}
+        device_data = {'serial': device.id}
 
         output.append(device_data)
         
@@ -154,19 +153,6 @@ def get_invitations():
     return response
 
 
-@app.route('/teste')
-#  userList = users.query.join(friendships, users.id==friendships.user_id).add_columns(users.id, users.userName, users.userEmail, friendships.id, friendships.user_id, friendships.friend_id).filter(friendships.friend_id == userID)
-def main():
-    query= Users.query.join(Invitation, Users.id==Invitation.user_id).add_columns(Users.id, Users.username, Invitation.id, Invitation.user_id, Invitation.qrcode).filter(Invitation.user_id == userID)
-    print(query.statement)
-    return 'rola'
-    # output=[]
-    # for invitation in invitations:
-    #     invitation_data ={"id":invitation.id,"qrcode":invitation.qrcode,"user":invitation.user_id,"guest":invitation.guest_id,"device":invitation.device_id}
-    #     output.append(invitation_data)
-        
-    # response = make_response(jsonify({'Invitations': output}))
-    # return response
 
 ## Generate qrcode
 @app.route("/qrgenerator")
