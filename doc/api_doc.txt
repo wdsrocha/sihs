@@ -1,0 +1,66 @@
+drop database db_flask;
+create database db_flask;
+
+------gera tabelas pelo flask------------
+
+insert into tbl_device values('1231');
+insert into tbl_device values('1232');
+insert into tbl_device values('1233');
+insert into tbl_device values('1234');
+
+
+/devices (GET)
+response =>
+{
+    "Devices":[
+        "serial": ""
+    ]
+}
+
+
+/register (POST):
+{
+    "telegram_id":"1234",
+    "username":"Harivaldo",
+    "device_serial": "1231"
+}
+response => {"message":""}
+
+
+/invite (POST):
+{
+    "user_id": "1234",
+    "guest_email": "duartediogo98@gmail.com"
+}
+response => {"message":""}
+
+
+/confirm (POST):
+{
+    "user_id": "1234",
+    "guest_email": "duartediogo98@gmail.com"
+}
+response => {"message":""}
+
+
+/report (GET)
+{
+    "user_id":"1234"
+}
+response =>
+{
+  "invitations": [
+    {
+      "creation_date": "Sun, 01 Dec 2019 15:21:52 GMT",
+      "email": "amigoivan@.com",
+      "status": "unused",
+      "usage_date": "Sun, 01 Dec 2019 15:21:52 GMT"
+    },
+    {
+      "creation_date": "Sun, 01 Dec 2019 15:22:17 GMT",
+      "email": "outroamigoiva@gmail.com",
+      "status": "used",
+      "usage_date": "Sun, 01 Dec 2019 15:22:17 GMT"
+    }
+  ]
+}
