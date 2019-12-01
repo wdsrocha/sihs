@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask_cors import CORS
-from flask import Flask, request, jsonify, make_response
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import DateTime
-import qrcode
 import datetime
 import secrets
 import smtplib
 from email.message import EmailMessage
+
+import qrcode
+from flask import Flask, jsonify, make_response, request
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import DateTime
 
 app = Flask(__name__)
 
