@@ -6,9 +6,9 @@
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-								<h5 class="card-title">Acesso</h5>
+								<h5 class="card-title">Distribuição do acesso anual ao sistema </h5>
                 <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
-								<h2 class="card-title">Numero de acessos ao sistema durante o ano</h2>
+								<h2 class="card-title">Acesso Anual</h2>
                 <!-- <h2 class="card-title">{{$t('dashboard.performance')}}</h2> -->
               </div>
               <div class="col-sm-6">
@@ -16,7 +16,7 @@
                   class="btn-group btn-group-toggle"
                   :class="isRTL ? 'float-left' : 'float-right'"
                   data-toggle="buttons"
-                >
+                > 
                   <label
                     v-for="(option, index) in bigLineChartCategories"
                     :key="option"
@@ -55,10 +55,10 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-						<h5 class="card-category">Percentual de Erros nos 6 últimos meses</h5>
+						<h5 class="card-category">Percentual de acessos corretos nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-bell-55 text-primary"></i> 36,215%
+              <i class="tim-icons icon-bell-55 text-primary"></i> 90,215%
             </h3>
           </template>
           <div class="chart-area">
@@ -76,9 +76,10 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5>
+            <!-- <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5> -->
+            <h5 class="card-category">Acessos nos 6 últimos meses</h5>
             <h3 class="card-title">
-              <i class="tim-icons icon-delivery-fast text-info"></i> 3,500€
+              <i class="tim-icons icon-delivery-fast text-info"></i> 1000
             </h3>
           </template>
           <div class="chart-area">
@@ -95,9 +96,10 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-           <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
+						<h5 class="card-category">Percentual de acessos incorretos nos 6 últimos meses</h5>
+           <!-- <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-send text-success"></i> 12,100K
+              <i class="tim-icons icon-send text-success"></i> 09,785%
             </h3>
           </template>
           <div class="chart-area">
@@ -185,7 +187,7 @@ export default {
       greenLineChart: {
         extraOptions: chartConfigs.greenChartOptions,
         chartData: {
-          labels: ["JUL", "AUG", "SEP", "OCT", "NOV"],
+          labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
           datasets: [
             {
               label: "My First dataset",
@@ -201,7 +203,7 @@ export default {
               pointHoverRadius: 4,
               pointHoverBorderWidth: 15,
               pointRadius: 4,
-              data: [90, 27, 60, 12, 80]
+              data: [90, 27, 60, 12, 80, 30]
             }
           ]
         },
@@ -215,7 +217,7 @@ export default {
       blueBarChart: {
         extraOptions: chartConfigs.barChartOptions,
         chartData: {
-          labels: ["USA", "GER", "AUS", "UK", "RO", "BR"],
+          labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
           datasets: [
             {
               label: "Countries",
