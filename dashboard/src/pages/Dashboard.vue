@@ -2,19 +2,6 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <card type="nav-tabs" class="text-center">
-          <div slot="header" class="card-header-primary">Featured</div>
-          <h4 class="card-title">Special title treatment</h4>
-          <p
-            class="card-text"
-          >With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-          <div slot="footer" class="text-muted">2 days ago</div>
-        </card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
         <card type="chart">
           <template slot="header">
             <div class="row">
@@ -71,7 +58,7 @@
 						<h5 class="card-category">Percentual de Erros nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-bell-55 text-primary"></i> 763,215%
+              <i class="tim-icons icon-bell-55 text-primary"></i> 36,215%
             </h3>
           </template>
           <div class="chart-area">
@@ -108,7 +95,7 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
+           <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
             <h3 class="card-title">
               <i class="tim-icons icon-send text-success"></i> 12,100K
             </h3>
@@ -126,32 +113,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-6 col-md-12">
-        <card type="tasks" :header-classes="{'text-right': isRTL}">
-          <template slot="header">
-            <h6 class="title d-inline">{{$t('dashboard.tasks', {count: 5})}}</h6>
-            <p class="card-category d-inline">{{$t('dashboard.today')}}</p>
-            <base-dropdown
-              menu-on-right
-              tag="div"
-              title-classes="btn btn-link btn-icon"
-              aria-label="Settings menu"
-              :class="{'float-left': isRTL}"
-            >
-              <i slot="title" class="tim-icons icon-settings-gear-63"></i>
-              <a class="dropdown-item" href="#pablo">{{$t('dashboard.dropdown.action')}}</a>
-              <a class="dropdown-item" href="#pablo">{{$t('dashboard.dropdown.anotherAction')}}</a>
-              <a class="dropdown-item" href="#pablo">{{$t('dashboard.dropdown.somethingElse')}}</a>
-            </base-dropdown>
-          </template>
-          <div class="table-full-width table-responsive">
-            <task-list></task-list>
-          </div>
-        </card>
-      </div>
-      <div class="col-lg-6 col-md-12">
+      <div class="col-12">
+      <!-- <div class="col-lg-6 col-md-12"> -->
         <card class="card" :header-classes="{'text-right': isRTL}">
-          <h4 slot="header" class="card-title">{{$t('dashboard.simpleTable')}}</h4>
+          <!-- <h4 slot="header" class="card-title">{{$t('dashboard.simpleTable')}}</h4> -->
+          <h4 slot="header" class="card-title">Usuários mais ativos</h4>
           <div class="table-responsive">
             <user-table></user-table>
           </div>
@@ -334,130 +300,3 @@ export default {
   }
 };
 </script>
-<style>
-</style>
-
-<!--
-
-<template>
-  <div>
-    <card class="text-center">
-      <line-chart
-        style="height: 100%"
-        :chart-data="purpleLineChart.chartData"
-        :gradient-color="purpleLineChart.gradientColors"
-        :gradient-stops="purpleLineChart.gradientStops"
-        :extra-options="purpleLineChart.extraOptions"
-      ></line-chart>
-    </card>
-  </div>
-</template>
-<script>
-import LineChart from "@/components/Charts/LineChart";
-import BarChart from "@/components/Charts/BarChart";
-import {Card} from '@/components'
-//import PieChart from '@/components/Charts/PieChart'
-
-export default {
-  components: {
-    LineChart,
-		BarChart,
-		Card
-    //  PieChart
-  },
-
-  data() {
-    return {
-      purpleLineChart: {
-        extraOptions: {
-          maintainAspectRatio: false,
-          legend: {
-            display: false
-          },
-          responsive: true,
-          tooltips: {
-            backgroundColor: "#f5f5f5",
-            titleFontColor: "#333",
-            bodyFontColor: "#666",
-            bodySpacing: 4,
-            xPadding: 12,
-            mode: "nearest",
-            intersect: 0,
-            position: "nearest"
-          },
-          scales: {
-            yAxes: [
-              {
-                barPercentage: 1.6,
-                gridLines: {
-                  drawBorder: false,
-                  color: "rgba(29,140,248,0.0)",
-                  zeroLineColor: "transparent"
-                },
-                ticks: {
-                  suggestedMin: 50,
-                  suggestedMax: 110,
-                  padding: 20,
-                  fontColor: "#ff8a76"
-                }
-              }
-            ],
-
-            xAxes: [
-              {
-                barPercentage: 1.6,
-                gridLines: {
-                  drawBorder: false,
-                  color: "rgba(220,53,69,0.1)",
-                  zeroLineColor: "transparent"
-                },
-                ticks: {
-                  padding: 20,
-                  fontColor: "#ff8a76"
-                }
-              }
-            ]
-          }
-        },
-        chartData: {
-						labels: [
-						"JAN",
-						"FEB",
-						"MAR",
-						"APR",
-						"MAY",
-						"JUN",
-						"JUL",
-						"AUG",
-						"SEP",
-						"OCT",
-						"NOV",
-						"DEC"
-					],
-          datasets: [
-            {
-              label: "Data",
-              fill: true,
-              borderColor
-: "#d048b6",
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: "#d048b6",
-              pointBorderColor: "rgba(255,255,255,0)",
-              pointHoverBackgroundColor: "#d048b6",
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data:  [10, 45, 30, 59, 65, 42, 75, 60, 90, 80, 110, 100]
-            }
-          ]
-        }
-      }
-    };
-  }
-};
-</script>
-
--->
