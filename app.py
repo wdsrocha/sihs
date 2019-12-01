@@ -17,10 +17,8 @@ import json
 
 app = Flask(__name__)
 
-from sqlalchemy import create_engine
-engine = create_engine('postgres://postgres:123@localhost:5432/db_flask')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:123@localhost:5432/db_flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:123@localhost:5555/db_flask'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 CORS(app,origins='*')
 
@@ -124,10 +122,26 @@ def createInvitation():
     img.save("image.jpg")
 
     #send qrcode to email
+    EMAIL_ADDRESS='' #put email here
+    EMAIL_PASSWORD='' #password here
+    msg = EmailMessage()
+    msg['Subject'] = 'Hey you!'
+    msg['From'] = EMAIL_ADDRESS
+    msg['To'] = data['email']
+    msg.set_content('Come to see me, you only have to use this qrcode')
 
-    # if(db.session.query(Invitation.id).filter_by(id=data['id']).scalar() is not None):
-    #      return 'This invitation already exist'
+    path='' #set image's path here
 
+    with open(path,'rb') as f:
+        file_data= f.read()
+        file_type=imghdr.what(f.name)
+        file_name=f.name
+    msg.add_attachment(file_data,maintype='image',subtype=file_type,filename=file_name)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        smtp.send_message(msg)
+    
     new_invitation=Invitation(id=secrets.token_hex(16),qrcode=data['user_id']+data['guest_email'],user_id=data['user_id'],email=data['guest_email'], status='unused')
     db.session.add(new_invitation)
     db.session.commit()
