@@ -19,7 +19,8 @@
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
+								<h5 class="card-title">Acesso</h5>
+                <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
 								<h2 class="card-title">Numero de acessos ao sistema durante o ano</h2>
                 <!-- <h2 class="card-title">{{$t('dashboard.performance')}}</h2> -->
               </div>
@@ -67,9 +68,10 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
+						<h5 class="card-category">Percentual de Erros nos 6 últimos meses</h5>
+            <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-bell-55 text-primary"></i> 763,215
+              <i class="tim-icons icon-bell-55 text-primary"></i> 763,215%
             </h3>
           </template>
           <div class="chart-area">
