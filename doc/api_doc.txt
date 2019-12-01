@@ -1,8 +1,18 @@
+0. no psql:
 drop database db_flask;
+
+1. no psql:
 create database db_flask;
 
-------gera tabelas pelo flask------------
+2. em outra aba no terminal:
+python3
+from app import db
+db.create_all()
 
+3. no psql
+\c db_flask;
+
+4. no psql
 insert into tbl_device values('1231');
 insert into tbl_device values('1232');
 insert into tbl_device values('1233');
