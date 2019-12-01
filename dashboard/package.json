@@ -1,32 +1,40 @@
 {
-  "name": "vue-material-dashboard",
-  "version": "1.2.1",
+  "name": "vue-black-dashboard",
+  "version": "1.0.0",
   "private": true,
+  "description": "A sample admin dashboard based on black dashboard UI template",
+  "author": "cristian.jora <joracristi@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve --open",
-    "dev": "npm run serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "e2e": "node test/e2e/runner.js",
+    "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service serve --open",
+    "lint-fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "chartist": "0.11.2",
-    "google-maps": "3.3.0",
-    "vue": "2.6.10",
-    "vue-clickaway": "2.2.2",
-    "vue-github-buttons": "3.1.0",
-    "vue-material": "1.0.0-beta-11",
-    "vue-router": "3.0.6",
-    "vue-social-sharing": "2.4.5"
+    "chart.js": "^2.7.3",
+    "register-service-worker": "^1.5.2",
+    "vue": "^2.6.6",
+    "vue-chartjs": "^3.4.0",
+    "vue-i18n": "^8.8.1",
+    "vue-router": "^3.0.2",
+    "vue-router-prefetch": "^1.4.0",
+    "vue2-transitions": "^0.2.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "3.8.0",
-    "@vue/cli-plugin-eslint": "3.8.0",
-    "@vue/cli-service": "3.8.3",
-    "@vue/eslint-config-prettier": "4.0.1",
-    "es6-promise": "4.2.8",
-    "eslint-plugin-vue": "5.2.2",
-    "node-sass": "4.12.0",
-    "sass-loader": "7.1.0",
-    "vue-template-compiler": "2.6.10"
-  }
+    "@vue/cli-plugin-babel": "^3.4.0",
+    "@vue/cli-plugin-eslint": "^3.4.0",
+    "@vue/cli-plugin-pwa": "^3.4.0",
+    "@vue/cli-service": "^3.4.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-i18n": "^0.5.1",
+    "vue-template-compiler": "^2.6.6"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 11"
+  ]
 }

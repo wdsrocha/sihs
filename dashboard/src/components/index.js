@@ -1,18 +1,32 @@
-// Cards
-import ChartCard from "./Cards/ChartCard.vue";
-import NavTabsCard from "./Cards/NavTabsCard.vue";
+import BaseInput from "./Inputs/BaseInput.vue";
+
+import BaseCheckbox from "./BaseCheckbox.vue";
+import BaseRadio from "./BaseRadio.vue";
+import BaseDropdown from "./BaseDropdown.vue";
+import BaseTable from "./BaseTable.vue";
+import BaseButton from "./BaseButton";
+import BaseAlert from "./BaseAlert";
+import BaseNav from "./BaseNav";
+import Modal from "./Modal";
+import CloseButton from "./CloseButton";
+
+import Card from "./Cards/Card.vue";
 import StatsCard from "./Cards/StatsCard.vue";
 
-// Tables
-import NavTabsTable from "./Tables/NavTabsTable.vue";
-import OrderedTable from "./Tables/OrderedTable.vue";
-import SimpleTable from "./Tables/SimpleTable.vue";
+import SidebarPlugin from "./SidebarPlugin/index";
 
 export {
-  ChartCard,
-  NavTabsCard,
+  BaseInput,
+  Card,
+  Modal,
+  CloseButton,
   StatsCard,
-  NavTabsTable,
-  OrderedTable,
-  SimpleTable
+  BaseTable,
+  BaseCheckbox,
+  BaseRadio,
+  BaseDropdown,
+  BaseButton,
+  BaseAlert,
+  SidebarPlugin,
+  BaseNav
 };

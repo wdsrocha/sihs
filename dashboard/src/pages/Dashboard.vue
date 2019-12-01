@@ -1,312 +1,279 @@
 <template>
-  <div class="content">
-    <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
-        <chart-card
-          :chart-data="dailySalesChart.data"
-          :chart-options="dailySalesChart.options"
-          :chart-type="'Line'"
-          data-background-color="blue"
-        >
-          <template slot="content">
-            <h4 class="title">Daily Sales</h4>
-            <p class="category">
-              <span class="text-success"
-                ><i class="fas fa-long-arrow-alt-up"></i> 55%
-              </span>
-              increase in today sales.
-            </p>
-          </template>
+  <div>
 
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 4 minutes ago
-            </div>
-          </template>
-        </chart-card>
-      </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
-        <chart-card
-          :chart-data="emailsSubscriptionChart.data"
-          :chart-options="emailsSubscriptionChart.options"
-          :chart-responsive-options="emailsSubscriptionChart.responsiveOptions"
-          :chart-type="'Bar'"
-          data-background-color="red"
-        >
-          <template slot="content">
-            <h4 class="title">Email Subscription</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 10 days ago
-            </div>
-          </template>
-        </chart-card>
-      </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
-        <chart-card
-          :chart-data="dataCompletedTasksChart.data"
-          :chart-options="dataCompletedTasksChart.options"
-          :chart-type="'Line'"
-          data-background-color="green"
-        >
-          <template slot="content">
-            <h4 class="title">Completed Tasks</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>
-              campaign sent 26 minutes ago
-            </div>
-          </template>
-        </chart-card>
-      </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
-        <stats-card data-background-color="green">
+    <div class="row">
+      <div class="col-12">
+        <card type="chart">
           <template slot="header">
-            <md-icon>store</md-icon>
-          </template>
-
-          <template slot="content">
-            <p class="category">Revenue</p>
-            <h3 class="title">$34,245</h3>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>date_range</md-icon>
-              Last 24 Hours
+            <div class="row">
+              <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
+                <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
+                <h2 class="card-title">{{$t('dashboard.performance')}}</h2>
+              </div>
+              <div class="col-sm-6">
+                <div class="btn-group btn-group-toggle"
+                     :class="isRTL ? 'float-left' : 'float-right'"
+                     data-toggle="buttons">
+                  <label v-for="(option, index) in bigLineChartCategories"
+                         :key="option"
+                         class="btn btn-sm btn-primary btn-simple"
+                         :class="{active: bigLineChart.activeIndex === index}"
+                         :id="index">
+                    <input type="radio"
+                           @click="initBigChart(index)"
+                           name="options" autocomplete="off"
+                           :checked="bigLineChart.activeIndex === index">
+                    {{option}}
+                  </label>
+                </div>
+              </div>
             </div>
           </template>
-        </stats-card>
+          <div class="chart-area">
+            <line-chart style="height: 100%"
+                        ref="bigChart"
+                        chart-id="big-line-chart"
+                        :chart-data="bigLineChart.chartData"
+                        :gradient-colors="bigLineChart.gradientColors"
+                        :gradient-stops="bigLineChart.gradientStops"
+                        :extra-options="bigLineChart.extraOptions">
+            </line-chart>
+          </div>
+        </card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
-        <stats-card data-background-color="orange">
+    </div>
+    <div class="row">
+      <div class="col-lg-4" :class="{'text-right': isRTL}">
+        <card type="chart">
           <template slot="header">
-            <md-icon>content_copy</md-icon>
+            <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
+            <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary "></i> 763,215</h3>
           </template>
-
-          <template slot="content">
-            <p class="category">Used Space</p>
-            <h3 class="title">
-              49/50
-              <small>GB</small>
-            </h3>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon class="text-danger">warning</md-icon>
-              <a href="#pablo">Get More Space...</a>
-            </div>
-          </template>
-        </stats-card>
+          <div class="chart-area">
+            <line-chart style="height: 100%"
+                        chart-id="purple-line-chart"
+                        :chart-data="purpleLineChart.chartData"
+                        :gradient-colors="purpleLineChart.gradientColors"
+                        :gradient-stops="purpleLineChart.gradientStops"
+                        :extra-options="purpleLineChart.extraOptions">
+            </line-chart>
+          </div>
+        </card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
-        <stats-card data-background-color="red">
+      <div class="col-lg-4" :class="{'text-right': isRTL}">
+        <card type="chart">
           <template slot="header">
-            <md-icon>info_outline</md-icon>
+            <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5>
+            <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i> 3,500€</h3>
           </template>
-
-          <template slot="content">
-            <p class="category">Fixed Issues</p>
-            <h3 class="title">75</h3>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>local_offer</md-icon>
-              Tracked from Github
-            </div>
-          </template>
-        </stats-card>
+          <div class="chart-area">
+            <bar-chart style="height: 100%"
+                       chart-id="blue-bar-chart"
+                       :chart-data="blueBarChart.chartData"
+                       :gradient-stops="blueBarChart.gradientStops"
+                       :extra-options="blueBarChart.extraOptions">
+            </bar-chart>
+          </div>
+        </card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
-        <stats-card data-background-color="blue">
+      <div class="col-lg-4" :class="{'text-right': isRTL}">
+        <card type="chart">
           <template slot="header">
-            <i class="fab fa-twitter"></i>
+            <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
+            <h3 class="card-title"><i class="tim-icons icon-send text-success "></i> 12,100K</h3>
           </template>
-
-          <template slot="content">
-            <p class="category">Folowers</p>
-            <h3 class="title">+245</h3>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>update</md-icon>
-              Just Updated
-            </div>
-          </template>
-        </stats-card>
+          <div class="chart-area">
+            <line-chart style="height: 100%"
+                        chart-id="green-line-chart"
+                        :chart-data="greenLineChart.chartData"
+                        :gradient-stops="greenLineChart.gradientStops"
+                        :extra-options="greenLineChart.extraOptions">
+            </line-chart>
+          </div>
+        </card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
-        <md-card>
-          <md-card-header data-background-color="orange">
-            <h4 class="title">Employees Stats</h4>
-            <p class="category">New employees on 15th September, 2016</p>
-          </md-card-header>
-          <md-card-content>
-            <ordered-table table-header-color="orange"></ordered-table>
-          </md-card-content>
-        </md-card>
-      </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
-        <nav-tabs-card>
-          <template slot="content">
-            <span class="md-nav-tabs-title">Tasks:</span>
-            <md-tabs class="md-success" md-alignment="left">
-              <md-tab id="tab-home" md-label="Bugs" md-icon="bug_report">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-
-              <md-tab id="tab-pages" md-label="Website" md-icon="code">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-
-              <md-tab id="tab-posts" md-label="server" md-icon="cloud">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-            </md-tabs>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <card type="tasks" :header-classes="{'text-right': isRTL}">
+          <template slot="header">
+            <h6 class="title d-inline">{{$t('dashboard.tasks', {count: 5})}}</h6>
+            <p class="card-category d-inline">{{$t('dashboard.today')}}</p>
+            <base-dropdown menu-on-right=""
+                           tag="div"
+                           title-classes="btn btn-link btn-icon"
+                           aria-label="Settings menu"
+                           :class="{'float-left': isRTL}">
+              <i slot="title" class="tim-icons icon-settings-gear-63"></i>
+              <a class="dropdown-item" href="#pablo">{{$t('dashboard.dropdown.action')}}</a>
+              <a class="dropdown-item" href="#pablo">{{$t('dashboard.dropdown.anotherAction')}}</a>
+              <a class="dropdown-item" href="#pablo">{{$t('dashboard.dropdown.somethingElse')}}</a>
+            </base-dropdown>
           </template>
-        </nav-tabs-card>
+          <div class="table-full-width table-responsive">
+            <task-list></task-list>
+          </div>
+        </card>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <card class="card" :header-classes="{'text-right': isRTL}">
+          <h4 slot="header" class="card-title">{{$t('dashboard.simpleTable')}}</h4>
+          <div class="table-responsive">
+            <user-table></user-table>
+          </div>
+        </card>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-import {
-  StatsCard,
-  ChartCard,
-  NavTabsCard,
-  NavTabsTable,
-  OrderedTable
-} from "@/components";
+  import LineChart from '@/components/Charts/LineChart';
+  import BarChart from '@/components/Charts/BarChart';
+  import * as chartConfigs from '@/components/Charts/config';
+  import TaskList from './Dashboard/TaskList';
+  import UserTable from './Dashboard/UserTable';
+  import config from '@/config';
 
-export default {
-  components: {
-    StatsCard,
-    ChartCard,
-    NavTabsCard,
-    NavTabsTable,
-    OrderedTable
-  },
-  data() {
-    return {
-      dailySalesChart: {
-        data: {
-          labels: ["M", "T", "W", "T", "F", "S", "S"],
-          series: [[12, 17, 7, 17, 23, 18, 38]]
-        },
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      dataCompletedTasksChart: {
-        data: {
-          labels: ["12am", "3pm", "6pm", "9pm", "12pm", "3am", "6am", "9am"],
-          series: [[230, 750, 450, 300, 280, 240, 200, 190]]
-        },
-
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      emailsSubscriptionChart: {
-        data: {
-          labels: [
-            "Ja",
-            "Fe",
-            "Ma",
-            "Ap",
-            "Mai",
-            "Ju",
-            "Jul",
-            "Au",
-            "Se",
-            "Oc",
-            "No",
-            "De"
+  export default {
+    components: {
+      LineChart,
+      BarChart,
+      TaskList,
+      UserTable
+    },
+    data() {
+      return {
+        bigLineChart: {
+          allData: [
+            [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
+            [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
+            [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
           ],
-          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
+          activeIndex: 0,
+          chartData: null,
+          extraOptions: chartConfigs.purpleChartOptions,
+          gradientColors: config.colors.primaryGradient,
+          gradientStops: [1, 0.4, 0],
+          categories: []
         },
-        options: {
-          axisX: {
-            showGrid: false
+        purpleLineChart: {
+          extraOptions: chartConfigs.purpleChartOptions,
+          chartData: {
+            labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+            datasets: [{
+              label: "Data",
+              fill: true,
+              borderColor: config.colors.primary,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: config.colors.primary,
+              pointBorderColor: 'rgba(255,255,255,0)',
+              pointHoverBackgroundColor: config.colors.primary,
+              pointBorderWidth: 20,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 15,
+              pointRadius: 4,
+              data: [80, 100, 70, 80, 120, 80],
+            }]
           },
-          low: 0,
-          high: 1000,
-          chartPadding: {
-            top: 0,
-            right: 5,
-            bottom: 0,
-            left: 0
-          }
+          gradientColors: config.colors.primaryGradient,
+          gradientStops: [1, 0.2, 0],
         },
-        responsiveOptions: [
-          [
-            "screen and (max-width: 640px)",
-            {
-              seriesBarDistance: 5,
-              axisX: {
-                labelInterpolationFnc: function(value) {
-                  return value[0];
-                }
-              }
-            }
-          ]
-        ]
+        greenLineChart: {
+          extraOptions: chartConfigs.greenChartOptions,
+          chartData: {
+            labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
+            datasets: [{
+              label: "My First dataset",
+              fill: true,
+              borderColor: config.colors.danger,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: config.colors.danger,
+              pointBorderColor: 'rgba(255,255,255,0)',
+              pointHoverBackgroundColor: config.colors.danger,
+              pointBorderWidth: 20,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 15,
+              pointRadius: 4,
+              data: [90, 27, 60, 12, 80],
+            }]
+          },
+          gradientColors: ['rgba(66,134,121,0.15)', 'rgba(66,134,121,0.0)', 'rgba(66,134,121,0)'],
+          gradientStops: [1, 0.4, 0],
+        },
+        blueBarChart: {
+          extraOptions: chartConfigs.barChartOptions,
+          chartData: {
+            labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+            datasets: [{
+              label: "Countries",
+              fill: true,
+              borderColor: config.colors.info,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              data: [53, 20, 10, 80, 100, 45],
+            }]
+          },
+          gradientColors: config.colors.primaryGradient,
+          gradientStops: [1, 0.4, 0],
+        }
       }
-    };
-  }
-};
+    },
+    computed: {
+      enableRTL() {
+        return this.$route.query.enableRTL;
+      },
+      isRTL() {
+        return this.$rtl.isRTL;
+      },
+      bigLineChartCategories() {
+        return this.$t('dashboard.chartCategories');
+      }
+    },
+    methods: {
+      initBigChart(index) {
+        let chartData = {
+          datasets: [{
+            fill: true,
+            borderColor: config.colors.primary,
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: config.colors.primary,
+            pointBorderColor: 'rgba(255,255,255,0)',
+            pointHoverBackgroundColor: config.colors.primary,
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: this.bigLineChart.allData[index]
+          }],
+          labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+        }
+        this.$refs.bigChart.updateGradients(chartData);
+        this.bigLineChart.chartData = chartData;
+        this.bigLineChart.activeIndex = index;
+      }
+    },
+    mounted() {
+      this.i18n = this.$i18n;
+      if (this.enableRTL) {
+        this.i18n.locale = 'ar';
+        this.$rtl.enableRTL();
+      }
+      this.initBigChart(0);
+    },
+    beforeDestroy() {
+      if (this.$rtl.isRTL) {
+        this.i18n.locale = 'en';
+        this.$rtl.disableRTL();
+      }
+    }
+  };
 </script>
+<style>
+</style>
