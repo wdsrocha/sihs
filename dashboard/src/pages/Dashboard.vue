@@ -58,7 +58,7 @@
             <h5 class="card-category">Percentual de acessos corretos nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-bell-55 text-primary"></i> 90,215%
+              <i class="tim-icons icon-check-2 text-primary"></i> 90,215%
             </h3>
           </template>
           <div class="chart-area">
@@ -79,7 +79,7 @@
             <!-- <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5> -->
             <h5 class="card-category">Acessos nos 6 últimos meses</h5>
             <h3 class="card-title">
-              <i class="tim-icons icon-delivery-fast text-info"></i> 1000 acessos
+              <i class="tim-icons icon-chart-bar-32 text-info"></i> 1000 acessos
             </h3>
           </template>
           <div class="chart-area">
@@ -99,7 +99,7 @@
             <h5 class="card-category">Percentual de acessos incorretos nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-send text-success"></i> 09,785%
+              <i class="tim-icons icon-simple-remove text-success"></i> 09,785%
             </h3>
           </template>
           <div class="chart-area">

@@ -10,72 +10,60 @@
           </div>
         </card>
       </div>
-
-      <div class="col-12">
-        <card class="card-plain">
-          <div class="table-full-width table-responsive">
-            <base-table :title="table2.title" :sub-title="table2.subTitle" :data="table2.data"
-                         :columns="table2.columns">
-
-            </base-table>
-          </div>
-        </card>
-      </div>
-
     </div>
 </template>
 <script>
 import { BaseTable } from "@/components";
-const tableColumns = ["Name", "Country", "City", "Salary"];
+const tableColumns = ["Nome", "Telefone", "Acessos", "Cadastro"];
 const tableData = [
-  {
+ {
     id: 1,
-    name: "Dakota Rice",
-    salary: "$36.738",
-    country: "Niger",
-    city: "Oud-Turnhout",
+    nome: "Dakota Rice",
+    telefone: "(92) 99999-9999",
+    acessos: 12,
+    cadastro: "25/09/2019"
   },
   {
     id: 2,
-    name: "Minerva Hooper",
-    salary: "$23,789",
-    country: "Curaçao",
-    city: "Sinaai-Waas"
+    nome: "Minerva Hooper",
+    telefone: "(92) 94444-4444",
+    acessos: 10,
+    cadastro: "30/01/2019"
   },
   {
     id: 3,
-    name: "Sage Rodriguez",
-    salary: "$56,142",
-    country: "Netherlands",
-    city: "Baileux"
+    nome: "Sage Rodriguez",
+    telefone: "(92) 99999-9999",
+    acessos: 9,
+    cadastro: "25/09/2019"
   },
   {
     id: 4,
-    name: "Philip Chaney",
-    salary: "$38,735",
-    country: "Korea, South",
-    city: "Overland Park"
+    nome: "Philip Chaney",
+    telefone: "(92) 99999-9999",
+    acessos: 8,
+    cadastro: "25/09/2019"
   },
   {
     id: 5,
-    name: "Doris Greene",
-    salary: "$63,542",
-    country: "Malawi",
-    city: "Feldkirchen in Kärnten"
+    nome: "Doris Greene",
+    telefone: "(92) 99999-9999",
+    acessos: 7,
+    cadastro: "25/09/2019"
   },
   {
     id: 6,
-    name: 'Mason Porter',
-    salary: '$98,615',
-    country: 'Chile',
-    city: 'Gloucester'
+    nome: "Mason Porter",
+    telefone: "(92) 99999-9999",
+    acessos: 5,
+    cadastro: "25/09/2019"
   },
   {
     id: 7,
-    name: 'Jon Porter',
-    salary: '$78,615',
-    country: 'Portugal',
-    city: 'Gloucester'
+    nome: "Jon Porter",
+    telefone: "(92) 99999-9999",
+    acessos: 5,
+    cadastro: "25/09/2019"
   }
 ];
 

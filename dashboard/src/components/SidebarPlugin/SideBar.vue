@@ -23,17 +23,24 @@
         </a>
       </div>
       <slot>
-
       </slot>
       <ul class="nav">
         <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
-        <slot name="links">
+        <!-- <slot name="links">
           <sidebar-link v-for="(link,index) in sidebarLinks"
                         :key="index"
                         :to="link.path"
                         :name="link.name"
                         :icon="link.icon">
-          </sidebar-link>
+          </sidebar-link> 
+        </slot> -->
+        <slot name="chuchucao">
+          <sidebar-link v-for="(link,index) in sidebarLinks"
+                        :key="index"
+                        :to="link.path"
+                        :name="link.name"
+                        :icon="link.icon">
+          </sidebar-link> 
         </slot>
       </ul>
     </div>
@@ -46,7 +53,7 @@
     props: {
       title: {
         type: String,
-        default: "Creative Tim"
+        default: "Monitoramento"
       },
       backgroundColor: {
         type: String,
@@ -66,10 +73,21 @@
           return acceptedValues.indexOf(value) !== -1;
         }
       },
-      sidebarLinks: {
-        type: Array,
-        default: () => []
-      },
+      // sidebarLinks: {
+      //   type: Array,
+      //   default: () => []
+      // },
+      sidebarLinks: [
+          {
+            "id": 1,
+          "path": "Dakota Rice",
+          "name": "$36.738",
+          "icon": "Niger",
+          },
+          {
+
+          }
+        ],
       autoClose: {
         type: Boolean,
         default: true
