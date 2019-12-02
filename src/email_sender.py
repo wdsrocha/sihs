@@ -1,4 +1,5 @@
 # Credits: https://realpython.com/python-send-email/#option-1-setting-up-a-gmail-account-for-development
+import configparser
 import smtplib
 import ssl
 from email import encoders
@@ -42,12 +43,10 @@ class EmailSender:
             server.sendmail(sender_email, receiver_email, text)
 
 
-import configparser
-
 config = configparser.ConfigParser()
-config.read('../setup.ini')
+config.read("../setup.ini")
 
-EmailSender(config['email']['user'], config['email']['password'])
+EmailSender(config["email"]["user"], config["email"]["password"])
 
 
 if 0 and __name__ == "__main__":
