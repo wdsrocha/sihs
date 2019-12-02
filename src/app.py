@@ -59,7 +59,7 @@ class Invitation(db.Model):
     creation_date = db.Column(DateTime, default=datetime.datetime.utcnow)
     usage_date = db.Column(DateTime, default=datetime.datetime.utcnow)
     status = db.Column(db.String(20), nullable=False)
-
+    count_error = db.Column(db.Integer(), default=0)
     user_id = db.Column(db.String(200), db.ForeignKey("tbl_user.id"), nullable=False)
 
     def __repr__(self):
@@ -183,6 +183,9 @@ def confirm():
             db.session.commit()
             response = make_response(jsonify({"message": "Ok"}))
         else:
+            if qrcode_inviataion.status == 'used':
+                qrcode_invitation.count_error += 1
+                db.session.commit()
             response = make_response(jsonify({"message": "Invalid invitation 1"}))
     else:
         response = make_response(jsonify({"message": "Invalid invitation 2"}))
