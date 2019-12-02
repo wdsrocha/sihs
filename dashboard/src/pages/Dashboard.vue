@@ -6,9 +6,9 @@
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-								<h5 class="card-title">Distribuição do acesso anual ao sistema </h5>
+                <h5 class="card-title">Distribuição do acesso anual ao sistema</h5>
                 <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
-								<h2 class="card-title">Acesso Anual</h2>
+                <h2 class="card-title">Acesso Anual</h2>
                 <!-- <h2 class="card-title">{{$t('dashboard.performance')}}</h2> -->
               </div>
               <div class="col-sm-6">
@@ -16,7 +16,7 @@
                   class="btn-group btn-group-toggle"
                   :class="isRTL ? 'float-left' : 'float-right'"
                   data-toggle="buttons"
-                > 
+                >
                   <label
                     v-for="(option, index) in bigLineChartCategories"
                     :key="option"
@@ -55,7 +55,7 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-						<h5 class="card-category">Percentual de acessos corretos nos 6 últimos meses</h5>
+            <h5 class="card-category">Percentual de acessos corretos nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
             <h3 class="card-title">
               <i class="tim-icons icon-bell-55 text-primary"></i> 90,215%
@@ -79,7 +79,7 @@
             <!-- <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5> -->
             <h5 class="card-category">Acessos nos 6 últimos meses</h5>
             <h3 class="card-title">
-              <i class="tim-icons icon-delivery-fast text-info"></i> 1000
+              <i class="tim-icons icon-delivery-fast text-info"></i> 1000 acessos
             </h3>
           </template>
           <div class="chart-area">
@@ -96,8 +96,8 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-						<h5 class="card-category">Percentual de acessos incorretos nos 6 últimos meses</h5>
-           <!-- <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5> -->
+            <h5 class="card-category">Percentual de acessos incorretos nos 6 últimos meses</h5>
+            <!-- <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5> -->
             <h3 class="card-title">
               <i class="tim-icons icon-send text-success"></i> 09,785%
             </h3>
@@ -116,18 +116,16 @@
     </div>
     <div class="row">
       <div class="col-12">
-      <!-- <div class="col-lg-6 col-md-12"> -->
-        <card class="card" :header-classes="{'text-right': isRTL}">
-          <!-- <h4 slot="header" class="card-title">{{$t('dashboard.simpleTable')}}</h4> -->
-          <h4 slot="header" class="card-title">Usuários mais ativos</h4>
+        <card :title="table1.title">
           <div class="table-responsive">
-            <user-table></user-table>
+            <base-table :data="table1.data" :columns="table1.columns" thead-classes="text-primary"></base-table>
           </div>
         </card>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import LineChart from "@/components/Charts/LineChart";
 import BarChart from "@/components/Charts/BarChart";
@@ -136,15 +134,76 @@ import TaskList from "./Dashboard/TaskList";
 import UserTable from "./Dashboard/UserTable";
 import config from "@/config";
 
+import { BaseTable } from "@/components";
+const tableColumns = ["Nome", "Telefone", "Acessos", "Cadastro"];
+const tableData = [
+  {
+    id: 1,
+    nome: "Dakota Rice",
+    telefone: "(92) 99999-9999",
+    acessos: 12,
+    cadastro: "25/09/2019"
+  },
+  {
+    id: 2,
+    nome: "Minerva Hooper",
+    telefone: "(92) 94444-4444",
+    acessos: 10,
+    cadastro: "30/01/2019"
+  },
+  {
+    id: 3,
+    nome: "Sage Rodriguez",
+    telefone: "(92) 99999-9999",
+    acessos: 9,
+    cadastro: "25/09/2019"
+  },
+  {
+    id: 4,
+    nome: "Philip Chaney",
+    telefone: "(92) 99999-9999",
+    acessos: 8,
+    cadastro: "25/09/2019"
+  },
+  {
+    id: 5,
+    nome: "Doris Greene",
+    telefone: "(92) 99999-9999",
+    acessos: 7,
+    cadastro: "25/09/2019"
+  },
+  {
+    id: 6,
+    nome: "Mason Porter",
+    telefone: "(92) 99999-9999",
+    acessos: 5,
+    cadastro: "25/09/2019"
+  },
+  {
+    id: 7,
+    nome: "Jon Porter",
+    telefone: "(92) 99999-9999",
+    acessos: 5,
+    cadastro: "25/09/2019"
+  }
+];
+
 export default {
   components: {
     LineChart,
     BarChart,
     TaskList,
-    UserTable
+    UserTable,
+    BaseTable,
   },
   data() {
     return {
+      table1: {
+        title: "Usuários mais ativos",
+        columns: [...tableColumns],
+        data: [...tableData]
+      },
+
       bigLineChart: {
         allData: [
           [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
@@ -232,7 +291,7 @@ export default {
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0]
-      }
+      },
     };
   },
   computed: {
