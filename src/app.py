@@ -231,7 +231,7 @@ def report():
 @app.route("/report-access", methods=["GET"])
 def report_access():
     data = request.get_json()
-    invitations = Invitation.query.filter_by(user_id=data["user_id"])
+    invitations = Invitation.query.all()
     freq_month = []
     
     for i in range(0,13):
@@ -240,6 +240,7 @@ def report_access():
     for i in invitations:
         freq_month[i.usage_date.month] += 1
     
+    freq_month = freq_month[7:]
     response = jsonify({"freq_month": freq_month})
     return response
 
@@ -273,7 +274,54 @@ def report_access_negative():
         freq_month[i.usage_date.month] += i.count_error
         print("errors:", freq_month[i.usage_date.month])
     
-    response = jsonify({"freq_month": freq_month})
+    response = jsonify({"freq_month": freq_month[7:]})
     return response
 
+@app.route("/report-system-usage", methods=["GET"])
+def report_system_usage():
+    invitations = Invitation.query.all()
+    positive = []
+    negative = []
+    morning = []
+    afternoon = []
+    night = []
+    
+    for i in range(0,13):
+        positive.append(0)
+        negative.append(0)
+        morning.append(0)
+        afternoon.append(0)
+        night.append(0)
 
+    for i in invitations:
+        if i.status == 'used':
+            if i.usage_date.hour < 12:
+                morning[i.usage_date.month] += 1
+            elif i.usage_date.hour < 18:
+                afternoon[i.usage_date.month] += 1
+            else:
+                afternoon[i.usage_date.month] += 1
+                
+            positive[i.usage_date.month] += 1
+                
+        negative[i.usage_date.month] += i.count_error
+    
+    negative = negative[7:]
+    positive = positive[7:]
+    morning = morning[1:]
+    afternoon = afternoon[1:]
+    night = night[1:]
+
+    print(negative)
+    response = jsonify({
+        "positive": positive,
+        "negative": negative,
+        "morning": morning,
+        "afternoon": afternoon,
+        "night": night
+        })
+    
+    return response
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
