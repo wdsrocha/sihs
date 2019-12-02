@@ -1,5 +1,6 @@
 import logging
 
+import requests
 from telegram import ReplyKeyboardRemove
 from telegram.ext import (
     CommandHandler,
@@ -31,9 +32,9 @@ def email(update, context):
     user = update.message.from_user
     logger.info(f"User {user.first_name} invited {email}")
 
-    reply = "E-mail inválido"
-    if email == "f":
-        reply = "Show!"
+    requests.
+
+    reply = "E-mail enviado!"
     update.message.reply_text(reply)
 
     return ConversationHandler.END

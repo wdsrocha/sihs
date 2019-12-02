@@ -10,6 +10,7 @@ from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime
+import imghdr
 
 app = Flask(__name__)
 
@@ -110,6 +111,21 @@ def get_devices():
     return response
 
 
+@app.route("/users")
+def get_users():
+    users = User.query.all()
+    output = []
+    for u in users:
+        user_data = {
+            "username": u.username,
+            "device": u.device_id
+        }
+        output.append(user_data)
+
+    response = make_response(jsonify({"Users": output}))
+    return response
+
+
 ## Generate an invitation
 @app.route("/invite", methods=["POST"])
 def createInvitation():
@@ -128,20 +144,21 @@ def createInvitation():
     qr.add_data(content)
     qr.make(fit=True)
     img = qr.make_image()
-    img.save("image.jpg")
+    
+    img_path = "images/"+data["user_id"] + data["guest_email"]+".jpg"
+    img.save(img_path)
 
     # send qrcode to email
-    EMAIL_ADDRESS = ""  # put email here
-    EMAIL_PASSWORD = ""  # password here
+    EMAIL_ADDRESS = "nataliacxavier1@gmail.com"  # put email here
+    EMAIL_PASSWORD = "***REMOVED***"  # password here
     msg = EmailMessage()
     msg["Subject"] = "Hey you!"
     msg["From"] = EMAIL_ADDRESS
-    msg["To"] = data["email"]
+    msg["To"] = data["guest_email"]
     msg.set_content("Come to see me, you only have to use this qrcode")
 
-    path = ""  # set image's path here
 
-    with open(path, "rb") as f:
+    with open(img_path, "rb") as f:
         file_data = f.read()
         file_type = imghdr.what(f.name)
         file_name = f.name
@@ -160,6 +177,7 @@ def createInvitation():
         email=data["guest_email"],
         status="unused",
     )
+
     db.session.add(new_invitation)
     db.session.commit()
     response = make_response(
@@ -183,8 +201,9 @@ def confirm():
             db.session.commit()
             response = make_response(jsonify({"message": "Ok"}))
         else:
-            if qrcode_inviataion.status == 'used':
-                qrcode_invitation.count_error += 1
+            if qrcode_invitation.status == 'used':
+                qrcode_invitation.count_error = qrcode_invitation.count_error + 1
+                print("erros->", qrcode_invitation.count_error)
                 db.session.commit()
             response = make_response(jsonify({"message": "Invalid invitation 1"}))
     else:
@@ -209,4 +228,52 @@ def report():
     response = jsonify({"invitations": output})
     return response
 
-#@app.route("report-access", methods=["GET"])
+@app.route("/report-access", methods=["GET"])
+def report_access():
+    data = request.get_json()
+    invitations = Invitation.query.filter_by(user_id=data["user_id"])
+    freq_month = []
+    
+    for i in range(0,13):
+        freq_month.append(0)
+
+    for i in invitations:
+        freq_month[i.usage_date.month] += 1
+    
+    response = jsonify({"freq_month": freq_month})
+    return response
+
+@app.route("/report-access-positive", methods=["GET"])
+def report_access_positive():
+    data = request.get_json()
+    invitations = Invitation.query.filter_by(user_id=data["user_id"])
+    freq_month = []
+    
+    for i in range(0,13):
+        freq_month.append(0)
+
+    for i in invitations:
+        if i.status == 'used':
+            freq_month[i.usage_date.month] += 1
+    
+    response = jsonify({"freq_month": freq_month})
+    return response
+
+    
+@app.route("/report-access-negative", methods=["GET"])
+def report_access_negative():
+    data = request.get_json()
+    invitations = Invitation.query.filter_by(user_id=data["user_id"])
+    freq_month = []
+    
+    for i in range(0,13):
+        freq_month.append(0)
+
+    for i in invitations:
+        freq_month[i.usage_date.month] += i.count_error
+        print("errors:", freq_month[i.usage_date.month])
+    
+    response = jsonify({"freq_month": freq_month})
+    return response
+
+
