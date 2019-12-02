@@ -2,13 +2,13 @@
   <card>
     <h5 slot="header" class="title">Edit Profile</h5>
     <div class="row">
-      <div class="col-md-5 pr-md-1">
+      <!-- <div class="col-md-5 pr-md-1">
         <base-input label="Company (disabled)"
                   placeholder="Company"
                   v-model="model.company"
                   disabled>
-        </base-input>
-      </div>
+        </base-input> 
+      </div>-->
       <div class="col-md-3 px-md-1">
         <base-input label="Username"
                   placeholder="Username"
@@ -16,13 +16,13 @@
         </base-input>
       </div>
       <div class="col-md-4 pl-md-1">
-        <base-input label="Email address"
-                  type="email"
-                  placeholder="mike@email.com">
+        <base-input label="Device"
+                  v-model="model.device"
+                  >
         </base-input>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-6 pr-md-1">
         <base-input label="First Name"
                   v-model="model.firstName"
@@ -33,18 +33,18 @@
         <base-input label="Last Name"
                   v-model="model.lastName"
                   placeholder="Last Name">
-        </base-input>
+        </base-input> 
       </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <!-- <div class="row">
       <div class="col-md-12">
         <base-input label="Address"
                   v-model="model.address"
                   placeholder="Home Address">
         </base-input>
       </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <!-- <div class="row">
       <div class="col-md-4 pr-md-1">
         <base-input label="City"
                   v-model="model.city"
@@ -61,7 +61,7 @@
         <base-input label="Postal Code"
                   placeholder="ZIP Code">
         </base-input>
-      </div>
+      </div> 
     </div>
     <div class="row">
       <div class="col-md-8">
@@ -74,8 +74,8 @@
 
               </textarea>
         </base-input>
-      </div>
-    </div>
+      </div> 
+    </div>-->
     <base-button slot="footer" type="primary" fill>Save</base-button>
   </card>
 </template>

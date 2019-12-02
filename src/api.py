@@ -208,3 +208,5 @@ def report():
         output.append(data)
     response = jsonify({"invitations": output})
     return response
+
+@app.route("report-access", methods=["GET"])

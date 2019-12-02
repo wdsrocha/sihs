@@ -1,4 +1,3 @@
-<!-- AIzaSyD3_cl3hBBOdf20gqAcaPpJZ0JRbDWZw3M -->
 <template>
     <card type="plain" title="Google Maps">
       <div id="map" class="map">
@@ -215,7 +214,6 @@ export default {
     marker.setMap(map);
   }
 };
-
 </script>
 <style>
 </style>

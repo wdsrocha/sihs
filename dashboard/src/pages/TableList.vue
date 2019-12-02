@@ -14,54 +14,54 @@
 </template>
 <script>
 import { BaseTable } from "@/components";
-const tableColumns = ["Nome", "Telefone", "Acessos", "Cadastro"];
+const tableColumns = ["Nome", "Device", "Acessos", "Cadastro"];
 const tableData = [
- {
+  {
     id: 1,
     nome: "Dakota Rice",
-    telefone: "(92) 99999-9999",
+    device: "12345",
     acessos: 12,
     cadastro: "25/09/2019"
   },
   {
     id: 2,
     nome: "Minerva Hooper",
-    telefone: "(92) 94444-4444",
+    device: "12345",
     acessos: 10,
     cadastro: "30/01/2019"
   },
   {
     id: 3,
     nome: "Sage Rodriguez",
-    telefone: "(92) 99999-9999",
+    device: "12345",
     acessos: 9,
     cadastro: "25/09/2019"
   },
   {
     id: 4,
     nome: "Philip Chaney",
-    telefone: "(92) 99999-9999",
+    device: "12345",
     acessos: 8,
     cadastro: "25/09/2019"
   },
   {
     id: 5,
     nome: "Doris Greene",
-    telefone: "(92) 99999-9999",
+    device: "12345",
     acessos: 7,
     cadastro: "25/09/2019"
   },
   {
     id: 6,
     nome: "Mason Porter",
-    telefone: "(92) 99999-9999",
+    device: "12345",
     acessos: 5,
     cadastro: "25/09/2019"
   },
   {
     id: 7,
     nome: "Jon Porter",
-    telefone: "(92) 99999-9999",
+    device: "12345",
     acessos: 5,
     cadastro: "25/09/2019"
   }
