@@ -115,4 +115,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+#images
+*.jpg
+
 # End of https://www.gitignore.io/api/code,python
