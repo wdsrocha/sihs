@@ -58,7 +58,7 @@
             <h5 class="card-category">Percentual de acessos corretos nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-bell-55 text-primary"></i> 90,215%
+              <i class="tim-icons icon-bell-55 text-primary"></i> {{pp}}%
             </h3>
           </template>
           <div class="chart-area">
@@ -79,7 +79,7 @@
             <!-- <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5> -->
             <h5 class="card-category">Acessos nos 6 últimos meses</h5>
             <h3 class="card-title">
-              <i class="tim-icons icon-delivery-fast text-info"></i> 1000 acessos
+              <i class="tim-icons icon-delivery-fast text-info"></i> {{ac}} acessos
             </h3>
           </template>
           <div class="chart-area">
@@ -99,7 +99,7 @@
             <h5 class="card-category">Percentual de acessos incorretos nos 6 últimos meses</h5>
             <!-- <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5> -->
             <h3 class="card-title">
-              <i class="tim-icons icon-send text-success"></i> 09,785%
+              <i class="tim-icons icon-send text-success"></i> {{pn}}%
             </h3>
           </template>
           <div class="chart-area">
@@ -133,60 +133,20 @@ import * as chartConfigs from "@/components/Charts/config";
 import TaskList from "./Dashboard/TaskList";
 import UserTable from "./Dashboard/UserTable";
 import config from "@/config";
-
+import axios from "axios";
 import { BaseTable } from "@/components";
-const tableColumns = ["Nome", "Telefone", "Acessos", "Cadastro"];
-const tableData = [
-  {
-    id: 1,
-    nome: "Dakota Rice",
-    telefone: "(92) 99999-9999",
-    acessos: 12,
-    cadastro: "25/09/2019"
-  },
-  {
-    id: 2,
-    nome: "Minerva Hooper",
-    telefone: "(92) 94444-4444",
-    acessos: 10,
-    cadastro: "30/01/2019"
-  },
-  {
-    id: 3,
-    nome: "Sage Rodriguez",
-    telefone: "(92) 99999-9999",
-    acessos: 9,
-    cadastro: "25/09/2019"
-  },
-  {
-    id: 4,
-    nome: "Philip Chaney",
-    telefone: "(92) 99999-9999",
-    acessos: 8,
-    cadastro: "25/09/2019"
-  },
-  {
-    id: 5,
-    nome: "Doris Greene",
-    telefone: "(92) 99999-9999",
-    acessos: 7,
-    cadastro: "25/09/2019"
-  },
-  {
-    id: 6,
-    nome: "Mason Porter",
-    telefone: "(92) 99999-9999",
-    acessos: 5,
-    cadastro: "25/09/2019"
-  },
-  {
-    id: 7,
-    nome: "Jon Porter",
-    telefone: "(92) 99999-9999",
-    acessos: 5,
-    cadastro: "25/09/2019"
-  }
-];
+const tableColumns = ["Nome", "Device"];
+const tableData = [];
+const allData_ = [];
+const positivos = [];
+const negativos = [];
+const total = [];
+var cont = 0;
+var qtd_acessos = 0;
+var qtd_positivos = 0;
+var qtd_negativos = 0;
+var perc_p = 0;
+var perc_n = 0;
 
 export default {
   components: {
@@ -194,22 +154,104 @@ export default {
     BarChart,
     TaskList,
     UserTable,
-    BaseTable,
+    BaseTable
   },
+
+  mounted() {
+    axios
+      .get("http://localhost:5000/users")
+      .then(function(response) {
+        console.log(response);
+        for (var i = 0; i < response.data.Users.length; i++) {
+          var usr = response.data.Users[i];
+          var isIn = false;
+          for (var i = 0; i < tableData.length; i++) {
+            if (usr.device == tableData[i].device) {
+              isIn = true;
+            }
+          }
+          if (isIn == false) {
+            tableData.push({
+              nome: usr.username,
+              device: usr.device
+            });
+          }
+          //console.log(usr);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    axios
+      .get("http://localhost:5000/report-system-usage")
+      .then(function(response) {
+        console.log(response);
+        var manha = response.data.morning;
+        var tarde = response.data.afternoon;
+        var noite = response.data.night;
+
+        allData_.push(manha);
+        allData_.push(tarde);
+        allData_.push(noite);
+
+        if (positivos.length <= 6) {
+          var p = response.data.positive;
+          for (var i = 0; i < p.length; i++) {
+            positivos.push(p[i]);
+            qtd_positivos += positivos[i];
+          }
+          var n = response.data.negative;
+          for (var i = 0; i < n.length; i++) {
+            negativos.push(n[i]);
+            qtd_negativos += negativos[i];
+          }
+          for (var i = 0; i < 6; i++) {
+            //total.push(manha[i] + tarde[i] + noite[i]);
+            total.push(positivos[i]+negativos[i])
+            qtd_acessos += total[i];
+          }
+          perc_p = (qtd_positivos/qtd_acessos)*100.0;
+          perc_n = (qtd_negativos/qtd_acessos)*100.0;
+        }
+        console.log("positivos=", positivos);
+        console.log("negativos=", negativos);
+        console.log("total=", total);
+        //console.log("aqui tem o alldata", allData_);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    this.i18n = this.$i18n;
+    if (this.enableRTL) {
+      this.i18n.locale = "ar";
+      this.$rtl.enableRTL();
+    }
+    this.initBigChart(0);
+  },
+
+  getusers() {},
+
   data() {
     return {
       table1: {
         title: "Usuários mais ativos",
         columns: [...tableColumns],
-        data: [...tableData]
+        data: tableData
       },
 
+      pp: perc_p,
+      pn: perc_n,
+      ac: qtd_acessos,
+
       bigLineChart: {
-        allData: [
-          [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-          [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-          [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
-        ],
+        allData: allData_,
+        // allData: [
+        //   [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
+        //   [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
+        //   [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
+        // ],
         activeIndex: 0,
         chartData: null,
         extraOptions: chartConfigs.purpleChartOptions,
@@ -223,7 +265,7 @@ export default {
           labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
           datasets: [
             {
-              label: "Data",
+              label: "Acertos",
               fill: true,
               borderColor: config.colors.primary,
               borderWidth: 2,
@@ -236,7 +278,7 @@ export default {
               pointHoverRadius: 4,
               pointHoverBorderWidth: 15,
               pointRadius: 4,
-              data: [80, 100, 70, 80, 120, 80]
+              data: positivos //[80, 100, 70, 80, 120, 80]
             }
           ]
         },
@@ -249,7 +291,7 @@ export default {
           labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
           datasets: [
             {
-              label: "My First dataset",
+              label: "Erros",
               fill: true,
               borderColor: config.colors.danger,
               borderWidth: 2,
@@ -262,7 +304,7 @@ export default {
               pointHoverRadius: 4,
               pointHoverBorderWidth: 15,
               pointRadius: 4,
-              data: [90, 27, 60, 12, 80, 30]
+              data: negativos //[90, 27, 60, 12, 80, 30]
             }
           ]
         },
@@ -279,19 +321,19 @@ export default {
           labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
           datasets: [
             {
-              label: "Countries",
+              label: "Acessos",
               fill: true,
               borderColor: config.colors.info,
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              data: [53, 20, 10, 80, 100, 45]
+              data: total //[53, 20, 10, 80, 100, 45]
             }
           ]
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0]
-      },
+      }
     };
   },
   computed: {
@@ -344,14 +386,6 @@ export default {
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
     }
-  },
-  mounted() {
-    this.i18n = this.$i18n;
-    if (this.enableRTL) {
-      this.i18n.locale = "ar";
-      this.$rtl.enableRTL();
-    }
-    this.initBigChart(0);
   },
   beforeDestroy() {
     if (this.$rtl.isRTL) {

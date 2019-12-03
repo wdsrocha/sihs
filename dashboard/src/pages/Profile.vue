@@ -12,6 +12,11 @@
 <script>
   import EditProfileForm from './Profile/EditProfileForm';
   import UserCard from './Profile/UserCard'
+  import axios from "axios";
+
+  var username_ = "Default";
+  var device_ = "1231";
+
   export default {
     components: {
       EditProfileForm,
@@ -20,8 +25,8 @@
     data() {
       return {
         model: {
-          device: '12345',
-          username: 'michael23',
+          device: device_,
+          username: username_,
         },
         user: {
           fullName: 'Mike Andrew',
@@ -29,7 +34,9 @@
           description: `Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...`,
         }
       }
-    }
+    },
+    mounted() {
+  }
   }
 </script>
 <style>
