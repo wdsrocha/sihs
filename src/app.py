@@ -137,15 +137,19 @@ def createInvitation():
         box_size=10,
         border=4,
     )
-    content = '{"user_id": "%s", "guest_email": "%s"}' % (
+    
+    invitation_id = secrets.token_hex(16)
+
+    content = '{"user_id": "%s", "guest_email": "%s", "invitation_id": "%s"}' % (
         data["user_id"],
         data["guest_email"],
+        invitation_id,
     )
     qr.add_data(content)
     qr.make(fit=True)
     img = qr.make_image()
     
-    img_path = "images/"+data["user_id"] + data["guest_email"]+".jpg"
+    img_path = "images/"+invitation_id+".jpg"
     img.save(img_path)
 
     # send qrcode to email
@@ -171,7 +175,7 @@ def createInvitation():
         smtp.send_message(msg)
 
     new_invitation = Invitation(
-        id=secrets.token_hex(16),
+        id=invitation_id,
         qrcode=data["user_id"] + data["guest_email"],
         user_id=data["user_id"],
         email=data["guest_email"],
@@ -192,9 +196,12 @@ def confirm():
     data = request.get_json()
 
     qrcode_compact = data["user_id"] + data["guest_email"]
+    invitation_id = data["invitation_id"]
+
     response = "nothing"
     if User.query.filter_by(id=data["user_id"]).scalar() is not None:
-        qrcode_invitation = Invitation.query.filter_by(qrcode=qrcode_compact).first()
+        qrcode_invitation = Invitation.query.filter_by(id=invitation_id).first()
+
         if qrcode_invitation is not None and qrcode_invitation.status == "unused":
             qrcode_invitation.status = "used"
             qrcode_invitation.usage_data = datetime.datetime.utcnow
@@ -230,7 +237,6 @@ def report():
 
 @app.route("/report-access", methods=["GET"])
 def report_access():
-    data = request.get_json()
     invitations = Invitation.query.all()
     freq_month = []
     
