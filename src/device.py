@@ -103,11 +103,8 @@ with open('img.png', 'wb') as out_file:
         break
     elif key & 0xFF == ord("s"):  # wait for 's' key to save
         cv2.imwrite("Capture.png", frame)
-
-# When everything done, release the capture
-
-
 """
+
 import pyzbar.pyzbar as pyzbar
 import numpy as np
 import shutil
@@ -117,17 +114,18 @@ import json
 from flask import jsonify
 import cv2
 
-ip = input("IP: ")
-port = input("Port: ")
+ip = '192.168.43.155'
+port = '5000'
 
 cnt = 0
 
 def decode(im, to_request = False):
     # Find barcodes and QR codes
     decodedObjects = pyzbar.decode(im)
+    print(decodedObjects)
 
     if to_request and len(decodedObjects):
-        url_api = f"http://{ip}:{port}/confirm"
+        url_api = "http://172.30.11.73:5000/confirm"
 
         try:
             payload = dict(eval(decodedObjects[0].data.decode("utf-8")))
@@ -135,14 +133,15 @@ def decode(im, to_request = False):
             print(e)
             return decodedObjects
 
+        print(payload)
+
         r = requests.post(url=url_api, json=payload)
-        print(r.json())
 
     return decodedObjects
 
 
 while True:
-    frame_url = "http://100.65.225.189:8080/photo.jpg"
+    frame_url = "http://172.30.14.109:8080/photo.jpg"
     response = requests.get(frame_url, stream=True).raw
 
     im = np.asarray(bytearray(response.read()), dtype="uint8")
@@ -151,11 +150,7 @@ while True:
     cv2.imshow('Image', im)
     cv2.waitKey(1)
 
-    decoded_objects = decodedObjects = decode(im, (cnt == 0))
-    print(decoded_objects)
-     
-    cnt = (cnt + 1) % 60
-
+    decode(im, (cnt == 0))
 
 cv2.destroyAllWindows()
 
