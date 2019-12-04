@@ -153,8 +153,8 @@ def createInvitation():
     img.save(img_path)
 
     # send qrcode to email
-    EMAIL_ADDRESS = "nataliacxavier1@gmail.com"  # put email here
-    EMAIL_PASSWORD = "***REMOVED***"  # password here
+    EMAIL_ADDRESS = ""  # put email here
+    EMAIL_PASSWORD = ""  # password here
     msg = EmailMessage()
     msg["Subject"] = "Hey you!"
     msg["From"] = EMAIL_ADDRESS
